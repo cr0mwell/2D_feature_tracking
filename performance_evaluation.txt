@@ -1,0 +1,31 @@
+############
+Detectors:
+############
+AKAZE 		~28ms, ~1350 keypoints detected overall, ~165 keypoints are within the Rect ROI (~50% are out of vehicle boundries);
+BRISK		~33.5ms, ~2700 keypoints detected overall, ~280 keypoints are within the Rect ROI (~50% are out of vehicle boundries);
+FAST		~0.5ms, ~2690 keypoints detected overall, ~220 keypoints are within the Rect ROI (~50% are out of vehicle boundries);
+Harris		~2ms, ~200 keypoints detected overall, ~25 keypoints are within the Rect ROI (~50% are out of vehicle boundries);
+ORB		~3ms, 500 keypoints detected overall, ~125 keypoints are within the Rect ROI (~50% are out of vehicle boundries);
+ShiTomasi	~4ms, ~1330 keypoints detected overall, ~120 keypoints are within the Rect ROI (~50% are out of vehicle boundries);
+SIFT		~30ms, ~1380 keypoints detected overall, ~135 keypoints are within the Rect ROI (~50% are out of vehicle boundries);
+SURF		~11.5ms, ~2940 keypoints detected overall, ~220 keypoints are within the Rect ROI (~50% are out of vehicle boundries);
+
+############
+Descriptors:
+############
+AKAZE	~23ms with ~140 matched keypoints from 165 found by detector;
+BRIEF	~35ms with ~180 matched keypoints from 280 found by detector;
+BRISK	~1.5ms with ~180 matched keypoints from 280 found by detector;
+FREAK	~12ms with ~138 matched keypoints from 220 found by detector;
+ORB	~1.6ms with ~80 matched keypoints from 125 found by detector;
+SIFT	~22ms with ~85 matched keypoints from 135 found by detector;
+SURF	~2.3ms with ~155 matched keypoints from 220 found by detector;
+
+
+All the statistics is above. During the testing the best performance showed the following descriptor-detector pairs:
+1. FAST-ORB		DETECTION: ~0.5 ms, ~2690 keypoints detected overall, ~220 keypoints are within the Rect ROI (~50% are out of vehicle boundries), DESCRIPTION: ~0.38ms, MATCHING: ~175 matched keypoints;
+2. FAST-BRISK		DETECTION: ~0.5 ms, ~2690 keypoints detected overall, ~220 keypoints are within the Rect ROI (~50% are out of vehicle boundries), DESCRIPTION: ~1.1ms, MATCHING: ~145 matched keypoints;
+3. SURF-(ORB)BRISK	DETECTION: ~11.5 ms, ~2940 keypoints detected overall, ~220 keypoints are within the Rect ROI (~50% are out of vehicle boundries), DESCRIPTION: ~1.2ms, MATCHING: ~150 matched keypoints;
+
+Though FAST detector is not that accurate in theory, on practice it shows good results, I wouldn't say that SURF is any better.
+ORB and BRISK detectors show almost the same productivity with high processing speed and high TP rate.

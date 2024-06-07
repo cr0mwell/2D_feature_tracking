@@ -143,6 +143,7 @@ int main(int argc, const char *argv[])
     if (detectorType != Detectors::AKAZE)
         descriptorType = static_cast<Descriptors>(getEnumOption(Descriptor));
     else
+        // AKAZE descriptor works with AKAZE Keypoint format only
         descriptorType = Descriptors::AKAZE;
     
     // Keep keypoints on the preceding vehicle only

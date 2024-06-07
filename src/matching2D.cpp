@@ -37,7 +37,7 @@ void matchDescriptors(vector<cv::KeyPoint> &kPtsSource, vector<cv::KeyPoint> &kP
     {
         // nearest neighbor (best match)
         matcher->match(descSource, descRef, matches);
-        cout << "Deployed NN filtering." << endl;
+        cout << "Deployed NN filtering. Number of matched keypoints: " << matches.size() << endl;
     }
 
     else if (selectorType.compare("SEL_KNN") == 0)
@@ -45,13 +45,14 @@ void matchDescriptors(vector<cv::KeyPoint> &kPtsSource, vector<cv::KeyPoint> &kP
         // k nearest neighbors (k=2)
         vector<vector<cv::DMatch>> knn_matches;
         matcher->knnMatch(descSource, descRef, knn_matches, k);
-        cout << "Deployed KNN filtering (K=" << k << ")." << endl;
         
         // Filter matches using descriptor distance ratio test
         float minDescDistRatio = 0.8;
         for (auto &m: knn_matches)
             if (m[0].distance < minDescDistRatio * m[1].distance)
                 matches.push_back(m[0]);
+        
+        cout << "Deployed KNN filtering (K=" << k << "). Number of matched keypoints: " << matches.size() << endl;
     }
 }
 
@@ -142,8 +143,7 @@ void detKeypointsHarris(vector<cv::KeyPoint> &keypoints, cv::Mat &img, bool bVis
     cv::normalize(dst, dst_norm, 0, 255, cv::NORM_MINMAX, CV_32FC1, cv::Mat());
     cv::convertScaleAbs(dst_norm, dst_norm_scaled);
     t = ((double)cv::getTickCount() - t) / cv::getTickFrequency();
-    cout << "Harris detection with n=" << keypoints.size() << " keypoints in " << 1000 * t / 1.0 << " ms" << endl;
-
+    
     // Locating local maximums in the Harris response matrix 
     // and perform a non-maximum suppression (NMS) in a local neighborhood around 
     // each maximum. The resulting coordinates will be stored in vector<cv::KeyPoint> structure.
@@ -171,6 +171,8 @@ void detKeypointsHarris(vector<cv::KeyPoint> &keypoints, cv::Mat &img, bool bVis
                     keypoints.push_back(new_keypoint); 
             }
         }
+    
+    cout << "Harris detection with n=" << keypoints.size() << " keypoints in " << 1000 * t / 1.0 << " ms" << endl;
     
     // visualize results
     if (bVis)
