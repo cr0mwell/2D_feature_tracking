@@ -10,14 +10,15 @@ Using the interactive CLI it allows to:
 * Select a descriptor from HOG and binary descriptors list (AKAZE, BRIEF, BRISK, FREAK, ORB, SIFT and SURF);
 * Choose whether to track the keypoints on the whole image or at the preceding vehicle only;
 * Limit the number of keypoints being tracked;
-* Choose whether to use cross-check matching approach for SIFT descriptor; 
+* Select between brute force and FLANN matching methods;
+* Define whether to use cross-check method for the brute force matching scenario; 
 * Choose between NN and KNN matching algorithms to filter false positive tracking (option is available when cross-check is disabled);
 
 The initial environment was developed by [Udacity](https://github.com/udacity/SFND_2D_Feature_Tracking/tree/master).
 In the current application were implemented lots of additional features, like:
 * Processing buffer optimization (only 2 subsequent images are stored for the memory optimization);
 * Integrated lots of detector and descriptor algorithms from OpenCV library;
-* Implemented brute force and FLANN matching approaches;
+* Implemented brute force (L2 norm for HOG descriptors and Hamming norm for the binary descriptors is used) and FLANN matching approaches;
 * Implemented KNN filtering algorithm to reduce the number of false positive matches;
 * Added interactive CLI runtime options selection;
 

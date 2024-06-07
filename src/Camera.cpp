@@ -154,10 +154,13 @@ int main(int argc, const char *argv[])
     if (bLimitKpts)
         maxKeypoints = getIntOption("* max key points number to process? [0-");
     
+    // Use BF or FLANN-based matching?
+    string matcherType = getBoolOption("* use brute force (y) or FLANN-based matching (n)?: ") ? "MAT_BF" : "MAT_FLANN";
+    
     // Use crosscheck for BF matching? (For HOG descriptors only)
     bool crossCheck {false};
-    if (descriptorType == Descriptors::SIFT || descriptorType == Descriptors::SURF)
-        crossCheck = getBoolOption("* use crosscheck matching for the descriptor? (y/n): ");
+    if (matcherType.compare("MAT_BF") == 0)
+        crossCheck = getBoolOption("* use crosscheck method for the brute force matching? (y/n): ");
     
     string selectorType = "SEL_NN";
     int k {2};
@@ -291,7 +294,6 @@ int main(int argc, const char *argv[])
             /* MATCH KEYPOINT DESCRIPTORS */
 
             vector<cv::DMatch> matches;
-            string matcherType = (descriptorType == Descriptors::SIFT || descriptorType == Descriptors::SURF) ? "MAT_BF" : "MAT_FLANN";
             string descriptorStructType = (descriptorType == Descriptors::SIFT || descriptorType == Descriptors::SURF) ? "DES_HOG" : "DES_BINARY";
             
             matchDescriptors((next(dataBuffer.end(), -2))->keypoints, (next(dataBuffer.end(), -1))->keypoints,

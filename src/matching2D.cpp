@@ -14,8 +14,11 @@ void matchDescriptors(vector<cv::KeyPoint> &kPtsSource, vector<cv::KeyPoint> &kP
 
     if (matcherType.compare("MAT_BF") == 0)
     {
-        int normType = cv::NORM_L2;
+        int normType = descriptorType == "DES_HOG" ? cv::NORM_L2 : cv::NORM_HAMMING;
+        string normTypeStr = normType == cv::NORM_L2 ? "L2 norm. " : "Hamming norm. ";
+        normTypeStr += crossCheck ? "Cross-check ENABLED." : "Cross-check DISABLED.";
         matcher = cv::BFMatcher::create(normType, crossCheck);
+        cout << "Used brute force matching with " << normTypeStr << endl;
     }
     else if (matcherType.compare("MAT_FLANN") == 0)
     {
@@ -26,6 +29,7 @@ void matchDescriptors(vector<cv::KeyPoint> &kPtsSource, vector<cv::KeyPoint> &kP
         }
 
         matcher = cv::FlannBasedMatcher::create();
+        cout << "Used FLANN-based matching." << endl;
     }
 
     // perform matching task
@@ -33,6 +37,7 @@ void matchDescriptors(vector<cv::KeyPoint> &kPtsSource, vector<cv::KeyPoint> &kP
     {
         // nearest neighbor (best match)
         matcher->match(descSource, descRef, matches);
+        cout << "Deployed NN filtering." << endl;
     }
 
     else if (selectorType.compare("SEL_KNN") == 0)
@@ -40,6 +45,7 @@ void matchDescriptors(vector<cv::KeyPoint> &kPtsSource, vector<cv::KeyPoint> &kP
         // k nearest neighbors (k=2)
         vector<vector<cv::DMatch>> knn_matches;
         matcher->knnMatch(descSource, descRef, knn_matches, k);
+        cout << "Deployed KNN filtering (K=" << k << ")." << endl;
         
         // Filter matches using descriptor distance ratio test
         float minDescDistRatio = 0.8;
